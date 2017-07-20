@@ -46,7 +46,7 @@ label {
     text-align: center;
 }
 
-.welcome_title, .footer, .footer2 {
+.welcome-title, .footer, .footer2 {
     vertical-align: middle;
     text-align: center;
 }
@@ -59,11 +59,11 @@ label {
     margin-top: 0;
 }
 
-.welcome_title {
+.welcome-title {
     margin-bottom: 15px;
 }
 
-.info_title {
+.info-title {
     color: white;
     border: 1px solid;
     padding: 10px;
@@ -72,7 +72,7 @@ label {
     text-align: center;
 }
 
-    .info_title div {
+    .info-title div {
         margin-bottom: 5px;
     }
 
@@ -80,7 +80,7 @@ label {
     margin: 0 15px;
 }
 
-.game_table {
+.game-table {
     width: 250px;
     margin-left: auto;
     margin-right: auto;
@@ -94,7 +94,7 @@ label {
     position: relative;
 }
 
-.guess_number_textbox {
+.guess-number-textbox {
     width: 35px;
 }
 
@@ -103,8 +103,12 @@ label {
 	margin-top: 8px;
 }
 
-#new_game_button, #surrender_button {
+.new-game-button, .surrender-button {
     width: 125px;
+}
+
+.new-game-button, .surrender-button {
+    margin-bottom: 10px;
 }
 
 #new_game_button,
@@ -117,6 +121,11 @@ label {
     margin-top: 8px;
 }
 
+.guess-button {
+    width: 100%;
+    margin-top: 8px;
+}
+
 #invalid_guess_button {
     color: red;
 }
@@ -125,7 +134,7 @@ label {
     color: green;
 }
 
-#server_output {
+.server-output {
     width: 260px;
 }
 
@@ -133,7 +142,7 @@ label {
     width: 260px;
 }
 
-.validation_footer {
+.validation-footer {
     color: brown;
     background: pink;
     border: 1px solid brown;

@@ -1,40 +1,40 @@
 ﻿<div id="game_root">
-    <h1 class="welcome_title">
+    <h1 class="welcome-title">
         Welcome to <br />
         Bulls and Cows!
     </h1>
 
-    <div class="info_title"><div>Single Player: </div>Human vs Computer</div>
+    <div class="info-title"><div>Single Player: </div>Human vs Computer</div>
 
-    <table class="game_table">
+    <table class="game-table">
         <tbody>
             <tr>
                 <td colspan="2">
-                    <button id="new_game_button" data-bind="event: {click: CreateGame}">Start New Game</button>
+                    <button class="new-game-button" data-bind="event: {click: CreateGame}">Start New Game</button>
                 </td>
                 <td colspan="2">
-                    <button id="surrender_button" data-bind="event: {click: Surrender}, enable: isRunning">Surrender</button>
+                    <button class="surrender-button" data-bind="event: {click: Surrender}, enable: isRunning">Surrender</button>
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    <input type="number" class="guess_number_textbox" min="1" max="9" data-bind="enable: isRunning, value: number1, event: {change: onValidate}" />
+                    <input type="number" class="guess-number-textbox" min="1" max="9" data-bind="enable: isRunning, value: number1, event: {change: onValidate}" />
                 </td>
                 <td>
-                    <input type="number" class="guess_number_textbox" min="0" max="9" data-bind="enable: isRunning, value: number2, event: {change: onValidate}" />
+                    <input type="number" class="guess-number-textbox" min="0" max="9" data-bind="enable: isRunning, value: number2, event: {change: onValidate}" />
                 </td>
                 <td>
-                    <input type="number" class="guess_number_textbox" min="0" max="9" data-bind="enable: isRunning, value: number3, event: {change: onValidate}" />
+                    <input type="number" class="guess-number-textbox" min="0" max="9" data-bind="enable: isRunning, value: number3, event: {change: onValidate}" />
                 </td>
                 <td>
-                    <input type="number" class="guess_number_textbox" min="0" max="9" data-bind="enable: isRunning, value: number4, event: {change: onValidate}" />
+                    <input type="number" class="guess-number-textbox" min="0" max="9" data-bind="enable: isRunning, value: number4, event: {change: onValidate}" />
                 </td>
             </tr>
 
             <tr>
                 <td colspan="4">
-                    <button id="guess_button"
+                    <button class="guess-button"
                             data-bind="enable: (isRunning() && isValidInput()), event: {click: Guess}">
                         Make a guess
                     </button>
@@ -43,14 +43,14 @@
 
             <tr>
                 <td colspan="4">
-                    <div class="validation_footer" data-bind="visible: !isValidInput()">Guess number cannot contain <br />duplicating digits!</div>
+                    <div class="validation-footer" data-bind="visible: !isValidInput()">Guess number cannot contain <br />duplicating digits!</div>
                 </td>
 
             </tr>
 
             <tr>
                 <td colspan="4">
-                    <select id="server_output" multiple size="12" data-bind="options:guesses"></select>
+                    <select class="server-output" multiple size="12" data-bind="options:guesses"></select>
                 </td>
             </tr>
         </tbody>

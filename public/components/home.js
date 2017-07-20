@@ -9,16 +9,16 @@ export default class Home extends React.Component {
 		return (
 			<div id="workspace" className="workspace">
 				<div id="game_root">
-					<h1 className="welcome_title">
+					<h1 className="welcome-title">
 						Welcome to <br />
 						Bulls and Cows!
 					</h1>
 
-					<div className="info_title">
+					<div className="info-title">
 						<div>Please select a game type:</div>
 					</div>
 
-					<table className="game_table">
+					<table className="game-table">
 						<tbody>
 							<tr>
 								<td>
