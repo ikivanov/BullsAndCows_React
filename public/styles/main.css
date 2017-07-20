@@ -98,6 +98,11 @@ label {
     width: 35px;
 }
 
+.game-menu-button {
+	width: 100%;
+	margin-top: 8px;
+}
+
 #new_game_button, #surrender_button {
     width: 125px;
 }
