@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title> Bulls and Cows</title>
+</head>
+<body>
+    <div id="workspace" class="workspace"></div>
+    <link rel="stylesheet" href="styles/main.css" />
+
+    <script data-main="common.js" src="libs/require.js"></script>
+
+    <script type="text/javascript">
+        define("settings", ["js/consts"], function (consts) {
+            return {
+                playerMode: consts.playerModes.MULTIPLAYER
+            }
+        });
+    </script>
+</body>
+</html>
