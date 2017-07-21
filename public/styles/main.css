@@ -90,7 +90,7 @@ label {
     text-align: center;
 }
 
-.game_table_moves {
+.game-table-moves {
     position: relative;
 }
 
@@ -150,7 +150,7 @@ label {
     padding: 5px;
 }
 
-.thinking_progress {
+.thinking-progress {
     position: absolute;
     border: 1px solid;
     top: 50%;

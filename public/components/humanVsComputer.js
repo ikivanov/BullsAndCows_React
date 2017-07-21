@@ -144,10 +144,6 @@ export default class HumanVsComputer extends React.Component {
     }
 
 	onCreateBtnClicked(e) {
-        let gameName = ("h_vs_c" + new Date().getTime()),
-        	nickname = "guest",
-        	gameType = SINGLE_PLAYER;
-
         if (!this.socket) {
 			this.initSocket();
 		}
