@@ -27,7 +27,7 @@ export default class BotPlayer {
 				gameId: gameId,
 				nickname: this.nickname
 			},
-			(data) => this.onGameJoined.call(data)
+			(data) => this.onGameJoined(data)
 		);
 	}
 

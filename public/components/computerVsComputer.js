@@ -21,11 +21,10 @@ export default class ComputerVsComputer extends React.Component {
 	render() {
 		return (
 			<div id="workspace" className="workspace">
-				<div>
-					<h1 className="welcome-title">
-						<div>Welcome to</div>
-						<div>Bulls and Cows!</div>
-					</h1>
+				<h1 className="welcome-title">
+					<div>Welcome to</div>
+					<div>Bulls and Cows!</div>
+				</h1>
 
 				<div className="info-title">
 					<div>Single Player:</div>
@@ -56,7 +55,6 @@ export default class ComputerVsComputer extends React.Component {
 					</tbody>
 				</table>
 
-
 				<h5 className="footer">
 					Implemented by <a href="mailto:ikivanov@gmail.com">Ivan Ivanov</a>
 				</h5>
@@ -64,7 +62,6 @@ export default class ComputerVsComputer extends React.Component {
 					Phone: +359 888 959 386
 				</h5>
 			</div>
-		</div>
 	);
 }
 

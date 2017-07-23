@@ -111,27 +111,9 @@ label {
     margin-bottom: 10px;
 }
 
-#new_game_button,
-#surrender_button {
-    margin-bottom: 10px;
-}
-
-#guess_button {
-    width: 100%;
-    margin-top: 8px;
-}
-
 .guess-button {
     width: 100%;
     margin-top: 8px;
-}
-
-#invalid_guess_button {
-    color: red;
-}
-
-#valid_guess_button {
-    color: green;
 }
 
 .server-output {
@@ -167,7 +149,7 @@ label {
     vertical-align: middle;
 }
 
-.awaiting_game_progress {
+.awaiting-game-progress {
     position: absolute;
     border: 1px solid;
     top: 50%;
@@ -179,12 +161,12 @@ label {
     margin-top: -27px;
 }
 
-.awaiting_game_progress img {
+.awaiting-game-progress img {
     width: 32px;
     vertical-align: middle;
 }
 
-.awaiting_turn_progress {
+.awaiting-turn-progress {
     position: absolute;
     border: 1px solid;
     top: 50%;
@@ -196,7 +178,7 @@ label {
     margin-top: -27px;
 }
 
-.awaiting_turn_progress img {
+.awaiting-turn-progress img {
     width: 32px;
     vertical-align: middle;
 }
