@@ -28,7 +28,7 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d0e4f7', endColorstr='#87bcea',GradientType=0 ); /* IE6-9 */
 }
 
-.p2p_workspace {
+.p2p-workspace {
     width: 550px;
 }
 
@@ -120,7 +120,7 @@ label {
     width: 260px;
 }
 
-#server_opponent_output {
+.server-opponent-output {
     width: 260px;
 }
 
