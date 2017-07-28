@@ -1,4 +1,4 @@
-﻿define(["knockout", "socket.io", "jquery", "js/consts", "viewModels/baseMultiplayerViewModel"], function (ko, io, $, consts, BaseMultiplayerViewModel) {
+﻿define(["knockout", "socket.io", "jquery", "js/consts_old", "viewModels/baseMultiplayerViewModel"], function (ko, io, $, consts, BaseMultiplayerViewModel) {
     Peer2PeerViewModel.prototype = new BaseMultiplayerViewModel;
     function Peer2PeerViewModel() {
         var that = this;
@@ -135,10 +135,10 @@
 
         var bulls = 0, cows = 0;
         var secretNumArr = that.secretNumberAsArr();
-            
+
         for (var i = 0; i < guessNumber.length; i++) {
             var num = guessNumber[i];
-                
+
             var index = secretNumArr.indexOf(num.toString());
             if (index >= 0) {
                 if (index == i) {
@@ -148,12 +148,12 @@
                 }
             }
         }
-            
-        var res = 
+
+        var res =
          {
              bulls: bulls, cows: cows
          }
-            
+
         return res;
     }
 

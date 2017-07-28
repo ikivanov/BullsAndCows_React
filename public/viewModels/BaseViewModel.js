@@ -1,4 +1,4 @@
-﻿define(["knockout", "socket.io", "js/consts"], function (ko, io, consts) {
+﻿define(["knockout", "socket.io", "js/consts_old"], function (ko, io, consts) {
     function BaseViewModel() {
         var that = this;
 

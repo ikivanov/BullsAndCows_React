@@ -1,33 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import * as consts from '../js/consts.js';
+
 import io from 'socket.io-client';
 const socket = io();
 
 import '../styles/main.css';
-
-const
-	PEER_2_PEER = 3,
-	SERVER_ADDRESS = "localhost:8080",
-	GAME_OVER_EVENT = "game over",
-	CREATE_GAME_EVENT = "create game",
-	JOIN_GAME_SERVER_EVENT = "join server game",
-	PLAYER_TURN_SERVER_EVENT = "player turn",
-	GAME_STARTED_SERVER_EVENT = "game started server event",
-	GUESS_NUMBER_SERVER_EVENT = "guess number server event",
-	GUESS_PEER_NUMBER_SERVER_EVENT = "check peer number",
-	GUESS_PEER_NUMBER_RESPONSE_EVENT = "guess peer number response",
-	GAME_OVER_PEER_SERVER_EVENT = "game over peer server",
-	GUESS_PEER_NUMBER_EVENT = "guess peer number",
-	NUMBER_LENGH = 4,
-	GUESS_PEER_NUMBER_CLIENT_RESPONSE_EVENT = "check peer number response",
-	GAME_OVER_PEER_CLIENT_EVENT = "game over peer client",
-	LIST_GAMES_EVENT = "list games",
-	CHECK_NICKNAME_EXISTS_EVENT = "nickname exists",
-	JOIN_GAME_EVENT = "join game",
-	LIST_GAME_PLAYERS_EVENT = "list players",
-	START_GAME_EVENT = "start game",
-	GUESS_NUMBER_EVENT = "guess number";
 
 export default class Peer2Peer extends React.Component {
 	render() {
@@ -330,7 +309,7 @@ export default class Peer2Peer extends React.Component {
 
 		this.socket = null;
 
-        this.gameType = PEER_2_PEER;
+        this.gameType = consts.PEER_2_PEER;
 
         this.initSocket();
 
@@ -342,37 +321,37 @@ export default class Peer2Peer extends React.Component {
 	}
 
     initSocket() {
-        this.socket = io.connect(SERVER_ADDRESS, { 'forceNew': true });
+        this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
 
-        this.socket.on(GAME_OVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_OVER_EVENT, (data) => {
             this.onGameOver(data);
         });
 
-        this.socket.on(JOIN_GAME_SERVER_EVENT, (data) => {
+        this.socket.on(consts.JOIN_GAME_SERVER_EVENT, (data) => {
             this.onGameJoined(data);
         });
 
-        this.socket.on(PLAYER_TURN_SERVER_EVENT, (data) => {
+        this.socket.on(consts.PLAYER_TURN_SERVER_EVENT, (data) => {
             this.onPlayerTurn(data);
         });
 
-        this.socket.on(GAME_STARTED_SERVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_STARTED_SERVER_EVENT, (data) => {
             this.onGameStarted(data);
         });
 
-        this.socket.on(GUESS_NUMBER_SERVER_EVENT, (data) => {
+        this.socket.on(consts.GUESS_NUMBER_SERVER_EVENT, (data) => {
             this.onGuessNumber(data);
         });
 
-        this.socket.on(GUESS_PEER_NUMBER_SERVER_EVENT, (data) => {
+        this.socket.on(consts.GUESS_PEER_NUMBER_SERVER_EVENT, (data) => {
             this.onGuessPeerIncomingQuery(data);
         });
 
-        this.socket.on(GUESS_PEER_NUMBER_RESPONSE_EVENT, (data) => {
+        this.socket.on(consts.GUESS_PEER_NUMBER_RESPONSE_EVENT, (data) => {
             this.onGuessPeerNumberResponse(data);
         });
 
-        this.socket.on(GAME_OVER_PEER_SERVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_OVER_PEER_SERVER_EVENT, (data) => {
             this.onGameOver(data);
         });
     }
@@ -382,7 +361,7 @@ export default class Peer2Peer extends React.Component {
             this.initSocket();
         }
 
-        this.socket.emit(CREATE_GAME_EVENT,
+        this.socket.emit(consts.CREATE_GAME_EVENT,
             {
                 name: this.state.gameName,
                 nickname: this.state.nickname,
@@ -398,7 +377,7 @@ export default class Peer2Peer extends React.Component {
             return;
         }
 
-        this.socket.emit(GUESS_PEER_NUMBER_EVENT, {
+        this.socket.emit(consts.GUESS_PEER_NUMBER_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken,
             number: [this.state.number1, this.state.number2, this.state.number3, this.state.number4]
@@ -415,7 +394,7 @@ export default class Peer2Peer extends React.Component {
         let bullscows = { bulls: 0, cows: 0 };
 
         let r = this.checkGuessNumber(data.number);
-        if (r.bulls == NUMBER_LENGH) {
+        if (r.bulls == consts.NUMBER_LENGH) {
             this.fireGameOver();
             return;
         }
@@ -425,7 +404,7 @@ export default class Peer2Peer extends React.Component {
 
 		this.setState({ opponentGuesses });
 
-        this.socket.emit(GUESS_PEER_NUMBER_CLIENT_RESPONSE_EVENT, {
+        this.socket.emit(consts.GUESS_PEER_NUMBER_CLIENT_RESPONSE_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken,
             nickname: this.state.nickname,
@@ -447,7 +426,7 @@ export default class Peer2Peer extends React.Component {
     }
 
     fireGameOver() {
-        this.socket.emit(GAME_OVER_PEER_CLIENT_EVENT, {
+        this.socket.emit(consts.GAME_OVER_PEER_CLIENT_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken,
             nickname: this.state.nickname,
@@ -527,7 +506,7 @@ export default class Peer2Peer extends React.Component {
     }
 
     ListGames() {
-        this.socket.emit(LIST_GAMES_EVENT, { type: this.gameType },
+        this.socket.emit(consts.LIST_GAMES_EVENT, { type: this.gameType },
             (data) => this.onGamesListed(data)
         );
     }
@@ -560,7 +539,7 @@ export default class Peer2Peer extends React.Component {
             this.initSocket();
         }
 
-        this.socket.emit(CHECK_NICKNAME_EXISTS_EVENT, {
+        this.socket.emit(consts.CHECK_NICKNAME_EXISTS_EVENT, {
             gameId: this.state.selectedGameId,
             nickname: this.nickname },
 			(data) => this.onNicknameExistsResponse(data)
@@ -575,7 +554,7 @@ export default class Peer2Peer extends React.Component {
             return;
         }
 
-        this.socket.emit(JOIN_GAME_EVENT, {
+        this.socket.emit(consts.JOIN_GAME_EVENT, {
             gameId: this.state.selectedGameId,
             nickname: this.state.nickname },
 			(data) => this.onGameJoined(data)
@@ -603,7 +582,7 @@ export default class Peer2Peer extends React.Component {
     }
 
     ListPlayers() {
-        this.socket.emit(LIST_GAME_PLAYERS_EVENT,
+        this.socket.emit(consts.LIST_GAME_PLAYERS_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken
@@ -624,7 +603,7 @@ export default class Peer2Peer extends React.Component {
     }
 
     onStartGameBtnClicked() {
-        this.socket.emit(START_GAME_EVENT, {
+        this.socket.emit(consts.START_GAME_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken
         	},
@@ -663,7 +642,7 @@ export default class Peer2Peer extends React.Component {
             return;
         }
 
-        this.socket.emit(GUESS_PEER_NUMBER_EVENT, {
+        this.socket.emit(consts.GUESS_PEER_NUMBER_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken,
             number: [this.state.number1, this.state.number2, this.state.number3, this.state.number4]

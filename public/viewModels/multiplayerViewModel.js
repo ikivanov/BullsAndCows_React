@@ -1,4 +1,4 @@
-﻿define(["knockout", "socket.io", "jquery", "js/consts", "js/botPlayer", "viewModels/baseMultiplayerViewModel"], function (ko, io, $, consts, BotPlayer, BaseMultiplayerViewModel) {
+﻿define(["knockout", "socket.io", "jquery", "js/consts_old", "js/botPlayer", "viewModels/baseMultiplayerViewModel"], function (ko, io, $, consts, BotPlayer, BaseMultiplayerViewModel) {
     MultiplayerViewModel.prototype = new BaseMultiplayerViewModel;
     function MultiplayerViewModel() {
         var that = this;

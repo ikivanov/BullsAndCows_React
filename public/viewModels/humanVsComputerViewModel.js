@@ -1,4 +1,4 @@
-﻿define(["knockout", "socket.io", "jquery", "js/consts", "viewModels/BaseViewModel"], function (ko, io, $, consts, BaseViewModel) {
+﻿define(["knockout", "socket.io", "jquery", "js/consts_old", "viewModels/BaseViewModel"], function (ko, io, $, consts, BaseViewModel) {
     HumanVsComputerViewModel.prototype = new BaseViewModel;
     function HumanVsComputerViewModel() {
         var that = this;

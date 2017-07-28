@@ -3,26 +3,12 @@ import ReactDOM from 'react-dom';
 
 import BotPlayer from './botPlayer.js';
 
+import * as consts from '../js/consts.js';
+
 import io from 'socket.io-client';
 const socket = io();
 
 import '../styles/main.css';
-
-const
-	SERVER_ADDRESS = "localhost:8080",
-	MULTIPLAYER = 1,
-	GAME_OVER_EVENT = "game over",
-	JOIN_GAME_SERVER_EVENT = "join server game",
-	PLAYER_TURN_SERVER_EVENT = "player turn",
-	GAME_STARTED_SERVER_EVENT = "game started server event",
-	GUESS_NUMBER_SERVER_EVENT = "guess number server event",
-	LIST_GAMES_EVENT = "list games",
-	CHECK_NICKNAME_EXISTS_EVENT = "nickname exists",
-	JOIN_GAME_EVENT = "join game",
-	LIST_GAME_PLAYERS_EVENT = "list players",
-	START_GAME_EVENT = "start game",
-	GUESS_NUMBER_EVENT = "guess number",
-	CREATE_GAME_EVENT = "create game";
 
 export default class Multiplayer extends React.Component {
 	render() {
@@ -272,7 +258,7 @@ export default class Multiplayer extends React.Component {
 
 		this.socket = null;
 
-        this.gameType = MULTIPLAYER;
+        this.gameType = consts.MULTIPLAYER;
 
         this.gameId = "";
         this.playerToken = "";
@@ -291,7 +277,7 @@ export default class Multiplayer extends React.Component {
             this.initSocket();
         }
 
-        this.socket.emit(CREATE_GAME_EVENT,
+        this.socket.emit(consts.CREATE_GAME_EVENT,
             {
                 name: this.state.gameName,
                 nickname: this.state.nickname,
@@ -302,7 +288,7 @@ export default class Multiplayer extends React.Component {
     }
 
     onAddBotBtnClicked() {
-        let botSocket = io.connect(SERVER_ADDRESS, { 'forceNew': true }),
+        let botSocket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true }),
         	nickname = "botPlayer_" + new Date().getTime(),
 			bot = new BotPlayer(null, botSocket, this.gameId, nickname);
 
@@ -310,25 +296,25 @@ export default class Multiplayer extends React.Component {
     }
 
     initSocket() {
-        this.socket = io.connect(SERVER_ADDRESS, { 'forceNew': true });
+        this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
 
-        this.socket.on(GAME_OVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_OVER_EVENT, (data) => {
 			this.onGameOver(data);
         });
 
-        this.socket.on(JOIN_GAME_SERVER_EVENT, (data) => {
+        this.socket.on(consts.JOIN_GAME_SERVER_EVENT, (data) => {
             this.onGameJoined(data);
         });
 
-        this.socket.on(PLAYER_TURN_SERVER_EVENT, (data) => {
+        this.socket.on(consts.PLAYER_TURN_SERVER_EVENT, (data) => {
             this.onPlayerTurn(data);
         });
 
-        this.socket.on(GAME_STARTED_SERVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_STARTED_SERVER_EVENT, (data) => {
             this.onGameStarted(data);
         });
 
-        this.socket.on(GUESS_NUMBER_SERVER_EVENT, (data) => {
+        this.socket.on(consts.GUESS_NUMBER_SERVER_EVENT, (data) => {
             this.onGuessNumber(data);
         });
     }
@@ -373,7 +359,7 @@ export default class Multiplayer extends React.Component {
     }
 
     ListGames() {
-        this.socket.emit(LIST_GAMES_EVENT, { type: this.gameType },
+        this.socket.emit(consts.LIST_GAMES_EVENT, { type: this.gameType },
             (data) => this.onGamesListed(data)
         );
     }
@@ -406,7 +392,7 @@ export default class Multiplayer extends React.Component {
             this.initSocket();
         }
 
-        this.socket.emit(CHECK_NICKNAME_EXISTS_EVENT, {
+        this.socket.emit(consts.CHECK_NICKNAME_EXISTS_EVENT, {
             gameId: this.state.selectedGameId,
             nickname: this.nickname },
 			(data) => this.onNicknameExistsResponse(data)
@@ -421,7 +407,7 @@ export default class Multiplayer extends React.Component {
             return;
         }
 
-        this.socket.emit(JOIN_GAME_EVENT, {
+        this.socket.emit(consts.JOIN_GAME_EVENT, {
             gameId: this.state.selectedGameId,
             nickname: this.state.nickname },
 			(data) => this.onGameJoined(data)
@@ -449,7 +435,7 @@ export default class Multiplayer extends React.Component {
     }
 
     ListPlayers() {
-        this.socket.emit(LIST_GAME_PLAYERS_EVENT,
+        this.socket.emit(consts.LIST_GAME_PLAYERS_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken
@@ -470,7 +456,7 @@ export default class Multiplayer extends React.Component {
     }
 
     onStartGameBtnClicked() {
-        this.socket.emit(START_GAME_EVENT, {
+        this.socket.emit(consts.START_GAME_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken
         	},
@@ -509,7 +495,7 @@ export default class Multiplayer extends React.Component {
             return;
         }
 
-        this.socket.emit(GUESS_NUMBER_EVENT, {
+        this.socket.emit(consts.GUESS_NUMBER_EVENT, {
             gameId: this.gameId,
             playerToken: this.playerToken,
             number: [this.state.number1, this.state.number2, this.state.number3, this.state.number4]

@@ -6,16 +6,9 @@ import BotPlayer from './botPlayer.js';
 import io from 'socket.io-client';
 const socket = io();
 
-import '../styles/main.css';
+import * as consts from '../js/consts.js';
 
-const
-	SERVER_ADDRESS = "localhost:8080",
-	GAME_OVER_EVENT = "game over",
-	SINGLE_PLAYER = 0,
-	START_GAME_EVENT = "start game",
-	CREATE_GAME_EVENT = "create game",
-	GUESS_NUMBER_EVENT = "guess number",
-	SURRENDER_GAME_EVENT = "surrender game";
+import '../styles/main.css';
 
 export default class ComputerVsComputer extends React.Component {
 	render() {
@@ -75,7 +68,7 @@ export default class ComputerVsComputer extends React.Component {
 
         this.nickname = "h_vs_c_" + new Date().getTime();
         this.gameName = "botPlayer_" + new Date().getTime();
-        this.gameType = SINGLE_PLAYER;
+        this.gameType = consts.SINGLE_PLAYER;
 
         this.gameId = "";
         this.playerToken = "";
@@ -86,9 +79,9 @@ export default class ComputerVsComputer extends React.Component {
 	}
 
     initSocket () {
-        this.socket = io.connect(SERVER_ADDRESS, { 'forceNew': true });
+        this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
 
-        this.socket.on(GAME_OVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_OVER_EVENT, (data) => {
             this.onGameOver(data);
         });
     }
@@ -100,7 +93,7 @@ export default class ComputerVsComputer extends React.Component {
 			this.initSocket();
 		}
 
-        this.socket.emit(CREATE_GAME_EVENT,
+        this.socket.emit(consts.CREATE_GAME_EVENT,
             {
                 name: this.gameName,
                 nickname: this.nickname,
@@ -120,7 +113,7 @@ export default class ComputerVsComputer extends React.Component {
         this.gameId = data.gameId;
         this.playerToken = data.playerToken;
 
-        this.socket.emit(START_GAME_EVENT,
+        this.socket.emit(consts.START_GAME_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken

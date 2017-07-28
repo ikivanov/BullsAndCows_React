@@ -1,19 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import * as consts from '../js/consts.js';
+
 import io from 'socket.io-client';
 const socket = io();
 
 import '../styles/main.css';
-
-const
-	SERVER_ADDRESS = "localhost:8080",
-	GAME_OVER_EVENT = "game over",
-	SINGLE_PLAYER = 0,
-	START_GAME_EVENT = "start game",
-	CREATE_GAME_EVENT = "create game",
-	GUESS_NUMBER_EVENT = "guess number",
-	SURRENDER_GAME_EVENT = "surrender game";
 
 export default class HumanVsComputer extends React.Component {
 	render() {
@@ -136,9 +129,9 @@ export default class HumanVsComputer extends React.Component {
 	}
 
     initSocket () {
-        this.socket = io.connect(SERVER_ADDRESS, { 'forceNew': true });
+        this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
 
-        this.socket.on(GAME_OVER_EVENT, (data) => {
+        this.socket.on(consts.GAME_OVER_EVENT, (data) => {
             this.onGameOver(data);
         });
     }
@@ -148,11 +141,11 @@ export default class HumanVsComputer extends React.Component {
 			this.initSocket();
 		}
 
-        this.socket.emit(CREATE_GAME_EVENT,
+        this.socket.emit(consts.CREATE_GAME_EVENT,
             {
                 name: ("h_vs_c" + new Date().getTime()),
                 nickname: "guest",
-                type: SINGLE_PLAYER
+                type: consts.SINGLE_PLAYER
             },
             (data) => { this.onGameCreated(data); });
 	}
@@ -168,7 +161,7 @@ export default class HumanVsComputer extends React.Component {
         this.gameId = data.gameId;
         this.playerToken = data.playerToken;
 
-        this.socket.emit(START_GAME_EVENT,
+        this.socket.emit(consts.START_GAME_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken
@@ -192,7 +185,7 @@ export default class HumanVsComputer extends React.Component {
     }
 
 	onSurrenderBtnClicked(e) {
-        this.socket.emit(SURRENDER_GAME_EVENT,
+        this.socket.emit(consts.SURRENDER_GAME_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken
@@ -235,7 +228,7 @@ export default class HumanVsComputer extends React.Component {
             return;
         }
 
-        this.socket.emit(GUESS_NUMBER_EVENT,
+        this.socket.emit(consts.GUESS_NUMBER_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken,
