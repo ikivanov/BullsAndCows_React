@@ -10,50 +10,38 @@ import * as consts from '../js/consts.js';
 
 import '../styles/main.css';
 
+import Title from './reusables/title.js';
+import Header from './reusables/header.js';
+import Footer from './reusables/footer.js';
+import ServerOutput from './reusables/serverOutput.js';
+
 export default class ComputerVsComputer extends React.Component {
 	render() {
 		return (
 			<div id="workspace" className="workspace">
-				<h1 className="welcome-title">
-					<div>Welcome to</div>
-					<div>Bulls and Cows!</div>
-				</h1>
+				<div>
+					<Title />
 
-				<div className="info-title">
-					<div>Single Player:</div>
-					Computer vs Computer
+					<Header title="Single Player:" description="Computer vs Computer" />
+
+					<table className="game-table">
+						<tbody>
+							<tr>
+								<td colSpan="2">
+									<button className="new-game-button" onClick={ (e) => this.onCreateBtnClicked(e) }>Start New Game</button>
+								</td>
+							</tr>
+
+							<tr>
+								<td colSpan="4">
+									<ServerOutput output={ this.state.guesses }/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<Footer />
 				</div>
-
-				<table className="game-table">
-					<tbody>
-						<tr>
-							<td colSpan="2">
-								<button className="new-game-button" onClick={ (e) => this.onCreateBtnClicked(e) }>Start New Game</button>
-							</td>
-						</tr>
-
-						<tr>
-							<td colSpan="4">
-								<div className="game-table-moves">
-									<select className="server-output" multiple size="12">
-										{
-											this.state.guesses.map((guess, index) =>
-												<option key={index}>{ guess }</option>
-											)
-										}
-									</select>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-
-				<h5 className="footer">
-					Implemented by <a href="mailto:ikivanov@gmail.com">Ivan Ivanov</a>
-				</h5>
-				<h5 className="footer2">
-					Phone: +359 888 959 386
-				</h5>
 			</div>
 	);
 }
