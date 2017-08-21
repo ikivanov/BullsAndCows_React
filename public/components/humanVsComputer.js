@@ -8,20 +8,20 @@ const socket = io();
 
 import '../styles/main.css';
 
+import Footer from './reusables/footer.js';
+import Title from './reusables/title.js';
+import Header from './reusables/header.js';
+import NumberSelector from './reusables/numberSelector.js';
+import ServerOutput from './reusables/serverOutput.js';
+
 export default class HumanVsComputer extends React.Component {
 	render() {
 		return (
 			<div id="workspace" className="workspace">
 				<div>
-					<h1 className="welcome-title">
-						<div>Welcome to</div>
-						<div>Bulls and Cows!</div>
-					</h1>
+					<Title />
 
-					<div className="info-title">
-						<div>Single Player: </div>
-						Human vs Computer
-					</div>
+					<Header title="Single Player:" description="Human vs Computer" />
 
 					<table className="game-table">
 						<tbody>
@@ -35,78 +35,21 @@ export default class HumanVsComputer extends React.Component {
 							</tr>
 
 							<tr>
-								<td>
-									<input type="number" className="guess-number-textbox" min="1" max="9" disabled={ !this.state.isRunning } value={ this.state.number1 }
-										onChange={ (e) => {
-											this.setState({ number1: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-								</td>
-								<td>
-									<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ !this.state.isRunning } value={ this.state.number2 }
-										onChange={ (e) => {
-											this.setState({ number2: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-								</td>
-								<td>
-									<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ !this.state.isRunning } value={ this.state.number3 }
-										onChange={ (e) => {
-											this.setState({ number3: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-								</td>
-								<td>
-									<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ !this.state.isRunning } value={ this.state.number4 }
-										onChange={ (e) => {
-											this.setState({ number4: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
+								<td colSpan="4">
+									<NumberSelector disabled={ this.state.isRunning } onGuess={ (number) => this.onGuess(number) }/>
 								</td>
 							</tr>
 
-							<tr>
-								<td colSpan="4">
-									<button className="guess-button" disabled={ !this.state.isRunning || !this.state.isValidInput } onClick={ (e) => this.onGuessBtnClicked(e) }>
-										Make a guess
-									</button>
-								</td>
-							</tr>
-
-							{
-								!this.state.isValidInput &&
-								<tr>
-									<td colSpan="4">
-										<div className="validation-footer">Guess number cannot contain <br />duplicating digits!</div>
-									</td>
-								</tr>
-							}
 
 							<tr>
 								<td colSpan="4">
-									<select className="server-output" multiple size="12">
-										{
-											this.state.guesses.map((guess, index) =>
-												<option key={index}>{ guess }</option>
-											)
-										}
-									</select>
+									<ServerOutput output={ this.state.guesses }/>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 
-
-					<h5 className="footer">
-						Implemented by <a href="mailto:ikivanov@gmail.com">Ivan Ivanov</a>
-					</h5>
-					<h5 className="footer2">
-						Phone: +359 888 959 386
-					</h5>
+					<Footer />
 				</div>
 			</div>
 		);
@@ -222,17 +165,12 @@ export default class HumanVsComputer extends React.Component {
         return true;
     }
 
-	onGuessBtnClicked(e) {
-        if (!this.isValidNumber()) {
-            alert("Guess number cannot contain duplicating digits!");
-            return;
-        }
-
+	onGuess(number) {
         this.socket.emit(consts.GUESS_NUMBER_EVENT,
             {
                 gameId: this.gameId,
                 playerToken: this.playerToken,
-                number: [this.state.number1, this.state.number2, this.state.number3, this.state.number4]
+                number
             },
             (data) => {
                 this.onGuessResponse(data);
