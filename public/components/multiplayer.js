@@ -10,227 +10,52 @@ const socket = io();
 
 import '../styles/main.css';
 
+import Footer from './reusables/footer.js';
+import Title from './reusables/title.js';
+import Header from './reusables/header.js';
+
+import MultiplayerStep1 from './multiplayer/multiplayerStep1';
+import MultiplayerStep2 from './multiplayer/multiplayerStep2';
+import MultiplayerStep3 from './multiplayer/multiplayerStep3';
+
 export default class Multiplayer extends React.Component {
 	render() {
 		return (
 			<div id="workspace" className="workspace">
-				<h1 className="welcome-title">
-					Welcome to <br />Bulls and Cows!
-				</h1>
+				<div>
+					<Title />
 
-				<div className="info-title">
-					<div>Multiplayer</div>
-					Step <span>{ this.state.step + 1 }</span> of 3
+					<Header title="Multiplayer" description={ "Step " + (this.state.step + 1) + " of 3" } />
+
+					<div className="multiplayer">
+					{
+						this.state.step === 0 &&
+						<MultiplayerStep1 selectedGameId={ this.state.selectedGameId }
+										  gamesList={ this.state.gamesList }
+										  onCreateGame={ (args) => this.onCreateGame(args) }
+										  onJoinGame={ (args) => this.onJoinGame(args) } />
+					}
+
+					{
+						this.state.step === 1 &&
+						<MultiplayerStep2 gameName={ this.state.gameName }
+										  gamePlayers={ this.state.gamePlayers }
+										  onAddBot={ () => this.onAddBot() }
+										  onStartGame={ () => this.onStartGame() }/>
+					}
+
+					{
+						this.state.step === 2 &&
+						<MultiplayerStep3 isGameOver={ this.state.isGameOver }
+										  isRunning={ this.state.isRunning }
+										  isMyTurn={ this.state.isMyTurn }
+										  guesses={ this.state.guesses }
+										  onGuess={ (args) => this.onGuess(args) }/>
+					}
+					</div>
+
+					<Footer />
 				</div>
-
-				<br />
-
-				<div className="multiplayer">
-				{
-					this.state.step === 0 &&
-					<table>
-						<tbody>
-							<tr>
-								<td>
-									<label> 1. Enter your nickname </label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<input type="text" value={ this.state.nickname } onChange={ (e) => this.setState({ nickname: e.target.value }) }/>
-								</td>
-							</tr>
-							<tr>
-								<td><br /></td>
-							</tr>
-							<tr>
-								<td colSpan="4" style={{ textAlign: 'left' }}>
-									<label>2. Create new game</label>
-								</td>
-							</tr>
-							<tr>
-								<td colSpan="2">
-									<input type="text" value={ this.state.gameName } onChange={ (e) => this.setState({ gameName: e.target.value }) } />
-								</td>
-								<td colSpan="2">
-									<button disabled={ this.state.nickname.length === 0 || this.state.gameName.length === 0 } onClick={ () => this.onCreateGameBtnClicked() }>Create Game</button>
-								</td>
-							</tr>
-							<tr>
-								<td><br /></td>
-							</tr>
-							<tr>
-								<td colSpan="4" style={{ textAlign: 'left' }}>
-									<label>or join an existing one</label>
-								</td>
-							</tr>
-							<tr>
-								<td colSpan="2">
-									<select className="full-width"
-										value={ this.state.selectedGameId }
-										disabled={ this.state.gamesList.length === 0 }
-										onChange={(e) => this.setState({ selectedGameId: e.target.value }) }>
-									{
-										this.state.gamesList.map((game, index) =>
-											<option key={index} value={ game.id }>{ game.name }</option>
-										)
-									}
-									</select>
-								</td>
-								<td colSpan="2">
-									<button disabled={ this.state.nickname.length === 0 || this.state.selectedGameId.length === 0 } onClick={ () => this.onJoinGameBtnClicked() }>Join Game</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				}
-				</div>
-
-				<div className="multiplayer">
-				{
-					this.state.step === 1 &&
-					<table className="game-table">
-						<tbody>
-							<tr>
-								<td colSpan=" 2">
-									<label>Game name:</label>
-								</td>
-								<td colSpan="2">
-									<label>{this.state.gameName}</label>
-								</td>
-							</tr>
-							<tr>
-								<td colSpan="4">
-									<button onClick={ () => this.onAddBotBtnClicked() }>Add Bot</button>
-								</td>
-							</tr>
-							<tr>
-								<td><br /></td>
-							</tr>
-							<tr>
-								<td colSpan="4" style={{ textAlign: 'left' }}>
-									<label>Players:</label>
-								</td>
-							</tr>
-							<tr>
-								<td colSpan="4" style={{ textAlign: 'left' }}>
-									<select className="full-width" multiple size="5">
-									{
-										this.state.gamePlayers.map((player, index) =>
-											<option key={index}>{ player }</option>
-										)
-									}
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td><br /></td>
-							</tr>
-							<tr>
-								<td colSpan="4" className="text-center">
-									<button onClick={ () => this.onStartGameBtnClicked() }>Start Game!</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				}
-				</div>
-
-				{
-					this.state.step === 2 &&
-					<table className="game-table">
-						<tbody>
-							<tr>
-								<td>
-									<input type="number" min="1" max="9" disabled={ !this.state.isRunning } value={ this.state.number1 }
-										onChange={ (e) => {
-											this.setState({ number1: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-
-								</td>
-								<td>
-									<input type="number" min="0" max="9" disabled={ !this.state.isRunning } value={ this.state.number2 }
-										onChange={ (e) => {
-											this.setState({ number2: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-								</td>
-								<td>
-									<input type="number" min="0" max="9" disabled={ !this.state.isRunning } value={ this.state.number3 }
-										onChange={ (e) => {
-											this.setState({ number3: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-								</td>
-								<td>
-									<input type="number" min="0" max="9" disabled={ !this.state.isRunning } value={ this.state.number4 }
-										onChange={ (e) => {
-											this.setState({ number4: e.target.value}, () => {
-												this.onValidate(e);
-											});
-										}} />
-								</td>
-							</tr>
-
-							<tr>
-								<td colSpan="4">
-									<button className="guess-button" disabled={ !this.state.isRunning || !this.state.isValidInput || !this.state.isMyTurn } onClick={ (e) => this.onGuessBtnClicked(e) }>
-										Make a guess
-									</button>
-								</td>
-							</tr>
-
-							{
-								!this.state.isValidInput &&
-								<tr>
-									<td colSpan="4">
-										<span>Guess number cannot contain duplicating digits!</span>
-									</td>
-
-								</tr>
-							}
-
-							<tr>
-								<td colSpan="4">
-									<select className="server-output" multiple size="12">
-									{
-										this.state.guesses.map((guess, index) =>
-											<option key={index}>{ guess }</option>
-										)
-									}
-									</select>
-
-									{
-										!this.state.isRunning && !this.state.isGameOver &&
-										<div className="awaiting-game-progress">
-											<img src="img/waiting.gif" />
-											<span>Awaiting game start...</span>
-										</div>
-									}
-
-									{
-										this.state.isRunning && !this.state.isMyTurn &&
-										<div className="awaiting-turn-progress">
-											<img src="img/waiting.gif" />
-											<span>Please wait for your turn...</span>
-										</div>
-									}
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				}
-
-				<h5 className="footer">
-					Implemented by <a href="mailto:ikivanov@gmail.com">Ivan Ivanov</a>
-				</h5>
-				<h5 className="footer2">
-					Phone: +359 888 959 386
-				</h5>
 			</div>
 		);
 	}
@@ -272,28 +97,33 @@ export default class Multiplayer extends React.Component {
         this.ListGames();
 	}
 
-    onCreateGameBtnClicked() {
+	onCreateGame(args) {
+		this.setState({
+			nickname: args.nickname,
+			gameName: args.gameName
+		});
+
         if (!this.socket) {
             this.initSocket();
         }
 
         this.socket.emit(consts.CREATE_GAME_EVENT,
             {
-                name: this.state.gameName,
-                nickname: this.state.nickname,
+                name: args.gameName,
+                nickname: args.nickname,
                 type: this.gameType
             },
             (data) => this.onGameCreated(data)
         );
-    }
+	}
 
-    onAddBotBtnClicked() {
+	onAddBot() {
         let botSocket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true }),
         	nickname = "botPlayer_" + new Date().getTime(),
 			bot = new BotPlayer(null, botSocket, this.gameId, nickname);
 
         bot.joinGame(this.gameId);
-    }
+	}
 
     initSocket() {
         this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
@@ -387,17 +217,22 @@ export default class Multiplayer extends React.Component {
         this.onGuessResponse(data);
     }
 
-    onJoinGameBtnClicked() {
+	onJoinGame(args) {
         if (!this.socket) {
             this.initSocket();
         }
 
+		this.setState({
+			gameId: args.selectedGameId,
+			nickname: args.nickname
+		});
+
         this.socket.emit(consts.CHECK_NICKNAME_EXISTS_EVENT, {
-            gameId: this.state.selectedGameId,
-            nickname: this.nickname },
+            gameId: args.selectedGameId,
+            nickname: args.nickname },
 			(data) => this.onNicknameExistsResponse(data)
 		);
-    }
+	}
 
     onNicknameExistsResponse(data) {
         let exists = data.exists;
@@ -412,57 +247,57 @@ export default class Multiplayer extends React.Component {
             nickname: this.state.nickname },
 			(data) => this.onGameJoined(data)
 		);
-    }
+	}
 
-    onGameJoined(data) {
-        let success = data.success;
-
-		if (!success) {
-            alert(data.msg);
-            return;
-        }
-
-        if (this.state.nickname == data.nickname) { //current user has joined the game, go to step 2
-            this.gameId = data.gameId;
-            this.playerToken = data.playerToken;
-
-            this.setState({ step: 2 });
-        } else { //another user has joined the game, update the player list
-            if (this.isGameCreator) {
-                this.ListPlayers();
-            }
-        }
-    }
-
-    ListPlayers() {
-        this.socket.emit(consts.LIST_GAME_PLAYERS_EVENT,
-            {
-                gameId: this.gameId,
-                playerToken: this.playerToken
-            },
-            (data) => this.onPlayersListed(data)
-        );
-    }
-
-    onPlayersListed(data) {
-        let success = data.success;
+	onGameJoined(data) {
+		let success = data.success;
 
 		if (!success) {
-            alert(data.msg);
-            return;
-        }
+			alert(data.msg);
+			return;
+		}
 
-        this.setState({ gamePlayers: data.players });
-    }
+		if (this.state.nickname == data.nickname) { //current user has joined the game, go to step 2
+			this.gameId = data.gameId;
+			this.playerToken = data.playerToken;
 
-    onStartGameBtnClicked() {
-        this.socket.emit(consts.START_GAME_EVENT, {
-            gameId: this.gameId,
-            playerToken: this.playerToken
-        	},
+			this.setState({ step: 2 });
+		} else { //another user has joined the game, update the player list
+			if (this.isGameCreator) {
+				this.ListPlayers();
+			}
+		}
+	}
+
+	ListPlayers() {
+		this.socket.emit(consts.LIST_GAME_PLAYERS_EVENT,
+			{
+				gameId: this.gameId,
+				playerToken: this.playerToken
+			},
+			(data) => this.onPlayersListed(data)
+		);
+	}
+
+	onPlayersListed(data) {
+		let success = data.success;
+
+		if (!success) {
+			alert(data.msg);
+			return;
+		}
+
+		this.setState({ gamePlayers: data.players });
+	}
+
+	onStartGame() {
+		this.socket.emit(consts.START_GAME_EVENT, {
+			gameId: this.gameId,
+			playerToken: this.playerToken
+			},
 			(data) => this.onGameStarted(data)
 		);
-    }
+	}
 
     onGameStarted(data) {
         let success = data.success;
@@ -481,59 +316,54 @@ export default class Multiplayer extends React.Component {
 			number4: 4,
 			step: 2
 		 });
-    }
+	}
 
-    onPlayerTurn(data) {
-        if (data.nickname == this.state.nickname) {
-            this.setState({ isMyTurn: true });
-        }
-    }
+	onPlayerTurn(data) {
+		if (data.nickname == this.state.nickname) {
+			this.setState({ isMyTurn: true });
+		}
+	}
 
-    onGuessBtnClicked() {
-        if (!this.isValidNumber()) {
-            alert("Guess number cannot contain duplicating digits!");
-            return;
-        }
+	onGuess(number) {
+		this.socket.emit(consts.GUESS_NUMBER_EVENT, {
+			gameId: this.gameId,
+			playerToken: this.playerToken,
+			number
+		}, (data) => {
+			this.onGuessResponse(data);
+			this.setState({ isMyTurn: false });
+		});
+	}
 
-        this.socket.emit(consts.GUESS_NUMBER_EVENT, {
-            gameId: this.gameId,
-            playerToken: this.playerToken,
-            number: [this.state.number1, this.state.number2, this.state.number3, this.state.number4]
-        }, (data) => {
-            this.onGuessResponse(data);
-            this.setState({ isMyTurn: false });
-        });
-    }
-
-    onGuessResponse(data) {
-        let bulls = data.bulls,
+	onGuessResponse(data) {
+		let bulls = data.bulls,
 			cows = data.cows,
 			number = data.number,
 			guesses = this.state.guesses.slice();
 
 		guesses.push(data.nickname + ": " + number.join('') + ", bulls: " + bulls + ", cows: " + cows);
-        this.setState({ guesses });
-    }
+		this.setState({ guesses });
+	}
 
  	onValidate(e) {
 		this.setState({ isValidInput: this.isValidNumber() });
 	}
 
-   isValidNumber() {
-        if (this.state.number1 == 0) {
-            return false;
-        }
+	isValidNumber() {
+		if (this.state.number1 == 0) {
+			return false;
+		}
 
-        let nums = [this.state.number1, this.state.number2, this.state.number3, this.state.number4];
+		let nums = [this.state.number1, this.state.number2, this.state.number3, this.state.number4];
 
-        //are numbers different from each other?
-        for (let i = 0; i < nums.length; i++) {
-            for (let j = nums.length - 1; j > i; j--) {
-                if (nums[i] == nums[j])
-                    return false;
-            }
-        }
+		//are numbers different from each other?
+		for (let i = 0; i < nums.length; i++) {
+			for (let j = nums.length - 1; j > i; j--) {
+				if (nums[i] == nums[j])
+					return false;
+			}
+		}
 
-        return true;
+		return true;
     }
 }

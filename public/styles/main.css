@@ -90,6 +90,10 @@ label {
     text-align: center;
 }
 
+.multiplayer .game-table {
+	width: 285px;
+}
+
 .game-table-moves {
     position: relative;
 }
