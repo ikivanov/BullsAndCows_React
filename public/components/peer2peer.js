@@ -126,6 +126,7 @@ export default class Peer2Peer extends React.Component {
 	onCreateGame(args) {
 		this.setState({
 			nickname: args.nickname,
+			secretNumber: args.secretNumber,
 			gameName: args.gameName
 		});
 

@@ -100,7 +100,7 @@ export default class Peer2PeerStep1 extends React.Component {
 			return;
 		}
 
-		this.onCreateGame({ gameName: this.state.gameName, nickname: this.state.nickname });
+		this.onCreateGame({ gameName: this.state.gameName, secretNumber: this.state.secretNumber, nickname: this.state.nickname });
 	}
 
     onJoinGameBtnClicked() {
