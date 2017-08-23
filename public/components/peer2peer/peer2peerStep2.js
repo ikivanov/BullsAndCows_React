@@ -15,7 +15,7 @@ export default class Peer2PeerStep2 extends React.Component {
 						</td>
 					</tr>
 					<tr>
-						<td><br /></td>
+						<td><br/></td>
 					</tr>
 					<tr>
 						<td colSpan="4" style={{ textAlign: 'left' }}>
@@ -34,7 +34,7 @@ export default class Peer2PeerStep2 extends React.Component {
 						</td>
 					</tr>
 					<tr>
-						<td><br /></td>
+						<td><br/></td>
 					</tr>
 					<tr>
 						<td colSpan="4" className="text-center">

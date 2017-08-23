@@ -154,27 +154,27 @@ export default class Peer2Peer extends React.Component {
         }
 
 		let opponentGuesses = this.state.opponentGuesses.slice();
-        opponentGuesses.push("number: " + data.number.join('') + ", bulls: " + r.bulls + ", cows: " + r.cows);
+		opponentGuesses.push("number: " + data.number.join('') + ", bulls: " + r.bulls + ", cows: " + r.cows);
 
 		this.setState({ opponentGuesses });
 
-        this.socket.emit(consts.GUESS_PEER_NUMBER_CLIENT_RESPONSE_EVENT, {
-            gameId: this.gameId,
-            playerToken: this.playerToken,
-            nickname: this.state.nickname,
-            success: true,
-            number: data.number,
-            bulls: r.bulls,
-            cows: r.cows
-        });
-    }
+		this.socket.emit(consts.GUESS_PEER_NUMBER_CLIENT_RESPONSE_EVENT, {
+			gameId: this.gameId,
+			playerToken: this.playerToken,
+			nickname: this.state.nickname,
+			success: true,
+			number: data.number,
+			bulls: r.bulls,
+			cows: r.cows
+		});
+	}
 
-    onGuessPeerNumberResponse(data) {
-        let bulls = data.bulls, cows = data.cows,
-        	number = data.number,
+	onGuessPeerNumberResponse(data) {
+		let bulls = data.bulls, cows = data.cows,
+			number = data.number,
 			guesses = this.state.guesses.slice();
 
-        guesses.push("number: " + number.join('') + ", bulls: " + bulls + ", cows: " + cows);
+		guesses.push("number: " + number.join('') + ", bulls: " + bulls + ", cows: " + cows);
 
 		this.setState({ guesses });
 	}

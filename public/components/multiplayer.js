@@ -81,18 +81,18 @@ export default class Multiplayer extends React.Component {
 
 		this.socket = null;
 
-        this.gameType = consts.MULTIPLAYER;
+		this.gameType = consts.MULTIPLAYER;
 
-        this.gameId = "";
-        this.playerToken = "";
+		this.gameId = "";
+		this.playerToken = "";
 
-        this.isGameCreator = false;
+		this.isGameCreator = false;
 
-        this.bots = [];
+		this.bots = [];
 
-        this.initSocket();
+		this.initSocket();
 
-        this.ListGames();
+		this.ListGames();
 	}
 
 	onCreateGame(args) {
@@ -101,76 +101,76 @@ export default class Multiplayer extends React.Component {
 			gameName: args.gameName
 		});
 
-        if (!this.socket) {
-            this.initSocket();
-        }
+		if (!this.socket) {
+			this.initSocket();
+		}
 
-        this.socket.emit(consts.CREATE_GAME_EVENT,
-            {
-                name: args.gameName,
-                nickname: args.nickname,
-                type: this.gameType
-            },
-            (data) => this.onGameCreated(data)
-        );
+		this.socket.emit(consts.CREATE_GAME_EVENT,
+			{
+				name: args.gameName,
+				nickname: args.nickname,
+				type: this.gameType
+			},
+			(data) => this.onGameCreated(data)
+		);
 	}
 
 	onAddBot() {
-        let botSocket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true }),
-        	nickname = "botPlayer_" + new Date().getTime(),
+		let botSocket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true }),
+			nickname = "botPlayer_" + new Date().getTime(),
 			bot = new BotPlayer(null, botSocket, this.gameId, nickname);
 
-        bot.joinGame(this.gameId);
+		bot.joinGame(this.gameId);
 	}
 
-    initSocket() {
-        this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
+	initSocket() {
+		this.socket = io.connect(consts.SERVER_ADDRESS, { 'forceNew': true });
 
-        this.socket.on(consts.GAME_OVER_EVENT, (data) => {
+		this.socket.on(consts.GAME_OVER_EVENT, (data) => {
 			this.onGameOver(data);
-        });
+		});
 
-        this.socket.on(consts.JOIN_GAME_SERVER_EVENT, (data) => {
-            this.onGameJoined(data);
-        });
+		this.socket.on(consts.JOIN_GAME_SERVER_EVENT, (data) => {
+			this.onGameJoined(data);
+		});
 
-        this.socket.on(consts.PLAYER_TURN_SERVER_EVENT, (data) => {
-            this.onPlayerTurn(data);
-        });
+		this.socket.on(consts.PLAYER_TURN_SERVER_EVENT, (data) => {
+			this.onPlayerTurn(data);
+		});
 
-        this.socket.on(consts.GAME_STARTED_SERVER_EVENT, (data) => {
-            this.onGameStarted(data);
-        });
+		this.socket.on(consts.GAME_STARTED_SERVER_EVENT, (data) => {
+			this.onGameStarted(data);
+		});
 
-        this.socket.on(consts.GUESS_NUMBER_SERVER_EVENT, (data) => {
-            this.onGuessNumber(data);
-        });
-    }
+		this.socket.on(consts.GUESS_NUMBER_SERVER_EVENT, (data) => {
+			this.onGuessNumber(data);
+		});
+	}
 
-    onGameCreated(data) {
-        let success = data.success;
+	onGameCreated(data) {
+		let success = data.success;
 
 		if (!success) {
-            alert(data.msg);
-            return;
-        }
+			alert(data.msg);
+			return;
+		}
 
-        this.gameId = data.gameId;
-        this.playerToken = data.playerToken;
+		this.gameId = data.gameId;
+		this.playerToken = data.playerToken;
 
-        this.isGameCreator = true;
+		this.isGameCreator = true;
 
-        this.ListPlayers();
+		this.ListPlayers();
 
-        this.setState({ step : 1 });
-    }
+		this.setState({ step : 1 });
+	}
 
-    onGameOver(data) {
-        let winStr = data.win ? "win" : "lose",
-        	result = "Game over! You " + winStr + "! Number is: " + data.number.join(''),
+	onGameOver(data) {
+		let winStr = data.win ? "win" : "lose",
+			result = "Game over! You " + winStr + "! Number is: " + data.number.join(''),
 			guesses = this.state.guesses.slice();
 
-        guesses.push(result);
+		guesses.push(result);
 
 		this.setState({
 			isGameOver: true,
@@ -179,70 +179,70 @@ export default class Multiplayer extends React.Component {
 		});
 
 
-        this.gameId = "";
+		this.gameId = "";
 
-        this.socket.removeAllListeners();
-        this.socket.disconnect();
-        this.socket = null;
-    }
+		this.socket.removeAllListeners();
+		this.socket.disconnect();
+		this.socket = null;
+	}
 
-    ListGames() {
-        this.socket.emit(consts.LIST_GAMES_EVENT, { type: this.gameType },
-            (data) => this.onGamesListed(data)
-        );
-    }
+	ListGames() {
+		this.socket.emit(consts.LIST_GAMES_EVENT, { type: this.gameType },
+			(data) => this.onGamesListed(data)
+		);
+	}
 
-    onGamesListed(data) {
-        let  success = data.success;
+	onGamesListed(data) {
+		let  success = data.success;
 
 		if (!success) {
-            alert(data.msg);
-            return;
-        }
+			alert(data.msg);
+			return;
+		}
 
 		this.setState({ gamesList: data.gamesList });
 
 		if (data.gamesList && data.gamesList.length > 0) {
 			this.setState({ selectedGameId: data.gamesList[0].id });
 		}
-    }
+	}
 
-    onGuessNumber(data) {
-        if (data.nickname === this.state.nickname) {
-            return;
-        }
+	onGuessNumber(data) {
+		if (data.nickname === this.state.nickname) {
+			return;
+		}
 
-        this.onGuessResponse(data);
-    }
+		this.onGuessResponse(data);
+	}
 
 	onJoinGame(args) {
-        if (!this.socket) {
-            this.initSocket();
-        }
+		if (!this.socket) {
+			this.initSocket();
+		}
 
 		this.setState({
 			gameId: args.selectedGameId,
 			nickname: args.nickname
 		});
 
-        this.socket.emit(consts.CHECK_NICKNAME_EXISTS_EVENT, {
-            gameId: args.selectedGameId,
-            nickname: args.nickname },
+		this.socket.emit(consts.CHECK_NICKNAME_EXISTS_EVENT, {
+			gameId: args.selectedGameId,
+			nickname: args.nickname },
 			(data) => this.onNicknameExistsResponse(data)
 		);
 	}
 
-    onNicknameExistsResponse(data) {
-        let exists = data.exists;
+	onNicknameExistsResponse(data) {
+		let exists = data.exists;
 
 		if (exists) {
-            alert(data.msg);
-            return;
-        }
+			alert(data.msg);
+			return;
+		}
 
-        this.socket.emit(consts.JOIN_GAME_EVENT, {
-            gameId: this.state.selectedGameId,
-            nickname: this.state.nickname },
+		this.socket.emit(consts.JOIN_GAME_EVENT, {
+			gameId: this.state.selectedGameId,
+			nickname: this.state.nickname },
 			(data) => this.onGameJoined(data)
 		);
 	}
@@ -297,15 +297,15 @@ export default class Multiplayer extends React.Component {
 		);
 	}
 
-    onGameStarted(data) {
-        let success = data.success;
+	onGameStarted(data) {
+		let success = data.success;
 
-        if (!success) {
-            alert(data.msg);
-            return;
-        }
+		if (!success) {
+			alert(data.msg);
+			return;
+		}
 
-        this.setState({
+		this.setState({
 			isRunning: true,
 			guesses: [],
 			number1: 1,
@@ -313,7 +313,7 @@ export default class Multiplayer extends React.Component {
 			number3: 3,
 			number4: 4,
 			step: 2
-		 });
+			});
 	}
 
 	onPlayerTurn(data) {
@@ -342,26 +342,4 @@ export default class Multiplayer extends React.Component {
 		guesses.push(data.nickname + ": " + number.join('') + ", bulls: " + bulls + ", cows: " + cows);
 		this.setState({ guesses });
 	}
-
- 	onValidate(e) {
-		this.setState({ isValidInput: this.isValidNumber() });
-	}
-
-	isValidNumber() {
-		if (this.state.number1 == 0) {
-			return false;
-		}
-
-		let nums = [this.state.number1, this.state.number2, this.state.number3, this.state.number4];
-
-		//are numbers different from each other?
-		for (let i = 0; i < nums.length; i++) {
-			for (let j = nums.length - 1; j > i; j--) {
-				if (nums[i] == nums[j])
-					return false;
-			}
-		}
-
-		return true;
-    }
 }

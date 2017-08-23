@@ -7,7 +7,7 @@ export default class MultiplayerStep2 extends React.Component {
 			<table className="game-table">
 				<tbody>
 					<tr>
-						<td colSpan=" 2">
+						<td colSpan="2">
 							<label>Game name:</label>
 						</td>
 						<td colSpan="2">
@@ -20,7 +20,7 @@ export default class MultiplayerStep2 extends React.Component {
 						</td>
 					</tr>
 					<tr>
-						<td><br /></td>
+						<td><br/></td>
 					</tr>
 					<tr>
 						<td colSpan="4" style={{ textAlign: 'left' }}>
@@ -39,7 +39,7 @@ export default class MultiplayerStep2 extends React.Component {
 						</td>
 					</tr>
 					<tr>
-						<td><br /></td>
+						<td><br/></td>
 					</tr>
 					<tr>
 						<td colSpan="4" className="text-center">
