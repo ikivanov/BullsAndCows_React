@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class MultiplayerStep2 extends React.Component {
+export default class Peer2PeerStep2 extends React.Component {
 	render() {
 		return (
 			<table className="game-table">
 				<tbody>
 					<tr>
-						<td colSpan=" 2">
+						<td colSpan="2">
 							<label>Game name:</label>
 						</td>
 						<td colSpan="2">
 							<label>{ this.props.gameName }</label>
-						</td>
-					</tr>
-					<tr>
-						<td colSpan="4">
-							<button onClick={ () => this.onAddBotBtnClicked() }>Add Bot</button>
 						</td>
 					</tr>
 					<tr>
@@ -58,20 +53,11 @@ export default class MultiplayerStep2 extends React.Component {
 			gamePlayers: []
 		}
 
-		this.onAddBot = props.onAddBot || null;
 		this.onStartGame = props.onStartGame || null;
 	}
 
 	componentWillReceiveProps(props) {
 		this.setState({ gamePlayers: props.gamePlayers });
-	}
-
-	onAddBotBtnClicked() {
-		if (!this.onAddBot) {
-			return;
-		}
-
-		this.onAddBot();
 	}
 
 	onStartGameBtnClicked() {

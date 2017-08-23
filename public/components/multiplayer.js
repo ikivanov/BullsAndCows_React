@@ -22,40 +22,38 @@ export default class Multiplayer extends React.Component {
 	render() {
 		return (
 			<div id="workspace" className="workspace">
-				<div>
-					<Title />
+				<Title />
 
-					<Header title="Multiplayer" description={ "Step " + (this.state.step + 1) + " of 3" } />
+				<Header title="Multiplayer" description={ "Step " + (this.state.step + 1) + " of 3" } />
 
-					<div className="multiplayer">
-					{
-						this.state.step === 0 &&
-						<MultiplayerStep1 selectedGameId={ this.state.selectedGameId }
-										  gamesList={ this.state.gamesList }
-										  onCreateGame={ (args) => this.onCreateGame(args) }
-										  onJoinGame={ (args) => this.onJoinGame(args) } />
-					}
+				<div className="multiplayer">
+				{
+					this.state.step === 0 &&
+					<MultiplayerStep1 selectedGameId={ this.state.selectedGameId }
+										gamesList={ this.state.gamesList }
+										onCreateGame={ (args) => this.onCreateGame(args) }
+										onJoinGame={ (args) => this.onJoinGame(args) } />
+				}
 
-					{
-						this.state.step === 1 &&
-						<MultiplayerStep2 gameName={ this.state.gameName }
-										  gamePlayers={ this.state.gamePlayers }
-										  onAddBot={ () => this.onAddBot() }
-										  onStartGame={ () => this.onStartGame() }/>
-					}
+				{
+					this.state.step === 1 &&
+					<MultiplayerStep2 gameName={ this.state.gameName }
+										gamePlayers={ this.state.gamePlayers }
+										onAddBot={ () => this.onAddBot() }
+										onStartGame={ () => this.onStartGame() }/>
+				}
 
-					{
-						this.state.step === 2 &&
-						<MultiplayerStep3 isGameOver={ this.state.isGameOver }
-										  isRunning={ this.state.isRunning }
-										  isMyTurn={ this.state.isMyTurn }
-										  guesses={ this.state.guesses }
-										  onGuess={ (args) => this.onGuess(args) }/>
-					}
-					</div>
-
-					<Footer />
+				{
+					this.state.step === 2 &&
+					<MultiplayerStep3 isGameOver={ this.state.isGameOver }
+										isRunning={ this.state.isRunning }
+										isMyTurn={ this.state.isMyTurn }
+										guesses={ this.state.guesses }
+										onGuess={ (args) => this.onGuess(args) }/>
+				}
 				</div>
+
+				<Footer />
 			</div>
 		);
 	}
