@@ -1,8 +1,4 @@
-const
-	PLAYER_TURN_SERVER_EVENT = "player turn",
-	NUMBER_LENGH = 4,
-	JOIN_GAME_EVENT = "join game",
-	GUESS_NUMBER_EVENT = "guess number";
+import * as consts from '../js/consts.js';
 
 export default class BotPlayer {
 	constructor(viewModel, socket, gameId, nickname, playerToken) {
@@ -13,16 +9,16 @@ export default class BotPlayer {
 		this.nickname = nickname ? nickname : "botPlayer_" + new Date().getTime();
 
 		this.socket.on(
-			PLAYER_TURN_SERVER_EVENT,
+			consts.PLAYER_TURN_SERVER_EVENT,
 			(data) => this.onPlayerTurn(data)
 		);
 
-		this.answers = this.getPermutations(NUMBER_LENGH, "123456789");
+		this.answers = this.getPermutations(consts.NUMBER_LENGH, "123456789");
 		this.answers = this.shuffle(this.answers);
 	}
 
 	joinGame(gameId) {
-		this.socket.emit(JOIN_GAME_EVENT,
+		this.socket.emit(consts.JOIN_GAME_EVENT,
 			{
 				gameId: gameId,
 				nickname: this.nickname
@@ -54,7 +50,7 @@ export default class BotPlayer {
 		let guessNum = this.answers[0];
 		let arr = guessNum.split('');
 
-		this.socket.emit(GUESS_NUMBER_EVENT,
+		this.socket.emit(consts.GUESS_NUMBER_EVENT,
 			{
 				gameId: this.gameId,
 				playerToken: this.playerToken,
@@ -81,7 +77,7 @@ export default class BotPlayer {
 
 		for (var i = that.answers.length - 1; i >= 0; i--) {
 			var tb = 0, tc = 0;
-			for (var ix = 0; ix < NUMBER_LENGH; ix++)
+			for (var ix = 0; ix < consts.NUMBER_LENGH; ix++)
 				if (that.answers[i][ix] == guess[ix])
 					tb++;
 				else if (that.answers[i].indexOf(guess[ix]) >= 0)
