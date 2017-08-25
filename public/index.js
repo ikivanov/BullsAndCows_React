@@ -13,12 +13,12 @@ import Peer2Peer from './components/peer2peer.js';
 ReactDOM.render(
 	<BrowserRouter>
 		<div>
-			<Route exact path="/public" component={ Home } />
-			<Route exact path="/public/index.html" component={ Home } />
-			<Route path="/public/humanVsComputer" component={ HumanVsComputer } />
-			<Route path="/public/computerVsComputer" component={ ComputerVsComputer } />
-			<Route path="/public/multiplayer" component={ Multiplayer } />
-			<Route path="/public/peer2peer" component={ Peer2Peer } />
+			<Route exact path="/" component={ Home } />
+			<Route exact path="/index.html" component={ Home } />
+			<Route path="/humanVsComputer" component={ HumanVsComputer } />
+			<Route path="/computerVsComputer" component={ ComputerVsComputer } />
+			<Route path="/multiplayer" component={ Multiplayer } />
+			<Route path="/peer2peer" component={ Peer2Peer } />
 		</div>
 	</BrowserRouter>,
 	document.getElementById('root')

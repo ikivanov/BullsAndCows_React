@@ -12,7 +12,7 @@ var app = express(),
 	server = require('http').createServer(app),
 	io = socketIO.listen(server);
 
-app.use("/public", express.static('public'));
+app.use("/", express.static('public'));
 
 server.listen(port, "localhost", () => {
 	console.log("Bull and Cows Server is listening...");

@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 
 import '../styles/main.css';
 
+import Header from './reusables/header.js';
+import Footer from './reusables/footer.js';
+
 export default class Home extends React.Component {
 	render() {
 		return (
 			<div id="workspace" className="workspace">
 				<div id="game_root">
-					<h1 className="welcome-title">
-						Welcome to <br />
-						Bulls and Cows!
-					</h1>
+					<Header title="Welcome to" description="Bulls and Cows" />
 
 					<div className="info-title">
 						<div>Please select a game type:</div>
@@ -22,28 +22,28 @@ export default class Home extends React.Component {
 						<tbody>
 							<tr>
 								<td>
-									<Link to='/public/humanVsComputer'>
+									<Link to='/humanVsComputer'>
 										<button className="game-menu-button">Human vs. Computer</button>
 									</Link>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<Link to='/public/computerVsComputer'>
+									<Link to='/computerVsComputer'>
 										<button className="game-menu-button">Computer vs. Computer</button>
 									</Link>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<Link to='/public/multiplayer'>
+									<Link to='/multiplayer'>
 										<button className="game-menu-button">Multiplayer</button>
 									</Link>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<Link to='/public/peer2peer'>
+									<Link to='/peer2peer'>
 										<button className="game-menu-button">Peer to Peer</button>
 									</Link>
 								</td>
@@ -51,13 +51,7 @@ export default class Home extends React.Component {
 						</tbody>
 					</table>
 
-
-					<h5 className="footer">
-						Implemented by <a href="mailto:ikivanov@gmail.com">Ivan Ivanov</a>
-					</h5>
-					<h5 className="footer2">
-						Phone: +359 888 959 386
-					</h5>
+					<Footer />
 				</div>
 			</div>
 		);
