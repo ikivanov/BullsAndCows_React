@@ -66,11 +66,6 @@ export default class Multiplayer extends React.Component {
 			isRunning: false,
 			nickname: "",
 			guesses: [],
-			number1: 1,
-			number2: 2,
-			number3: 3,
-			number4: 4,
-			isValidInput: true,
 			gameName: "",
 			selectedGameId: "",
 			step: 0,
@@ -145,6 +140,14 @@ export default class Multiplayer extends React.Component {
 		this.socket.on(consts.GUESS_NUMBER_SERVER_EVENT, (data) => {
 			this.onGuessNumber(data);
 		});
+	}
+
+	closeSocket() {
+		if (!this.socket) return;
+
+		this.socket.removeAllListeners();
+		this.socket.disconnect();
+		this.socket = null;
 	}
 
 	onGameCreated(data) {
@@ -308,10 +311,6 @@ export default class Multiplayer extends React.Component {
 		this.setState({
 			isRunning: true,
 			guesses: [],
-			number1: 1,
-			number2: 2,
-			number3: 3,
-			number4: 4,
 			step: 2
 			});
 	}
@@ -341,5 +340,9 @@ export default class Multiplayer extends React.Component {
 
 		guesses.push(data.nickname + ": " + number.join('') + ", bulls: " + bulls + ", cows: " + cows);
 		this.setState({ guesses });
+	}
+
+	componentWillUnmount() {
+		this.closeSocket();
 	}
 }

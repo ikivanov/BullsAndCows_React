@@ -13,6 +13,10 @@ var app = express(),
 	io = socketIO.listen(server);
 
 app.use("/", express.static('public'));
+app.use("/humanVsComputer", express.static('public'));
+app.use("/computerVsComputer", express.static('public'));
+app.use("/multiplayer", express.static('public'));
+app.use("/peer2peer", express.static('public'));
 
 server.listen(port, "localhost", () => {
 	console.log("Bull and Cows Server is listening...");

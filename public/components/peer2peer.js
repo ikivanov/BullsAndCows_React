@@ -123,6 +123,14 @@ export default class Peer2Peer extends React.Component {
 		});
 	}
 
+	closeSocket() {
+		if (!this.socket) return;
+
+		this.socket.removeAllListeners();
+		this.socket.disconnect();
+		this.socket = null;
+	}
+
 	onCreateGame(args) {
 		this.setState({
 			nickname: args.nickname,
@@ -404,5 +412,9 @@ export default class Peer2Peer extends React.Component {
 		});
 
 		this.setState({ isMyTurn: false });
+	}
+
+	componentWillUnmount() {
+		this.closeSocket();
 	}
 }

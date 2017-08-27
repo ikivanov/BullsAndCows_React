@@ -11,7 +11,7 @@ export default class MultiplayerStep3 extends React.Component {
 				<tbody>
 					<tr>
 						<td>
-							<NumberSelector disabled={ this.state.isRunning } onGuess={ (number) => this.onGuess(number) }/>
+							<NumberSelector disabled={ this.state.isRunning && this.state.isMyTurn } onGuess={ (number) => this.onGuess(number) }/>
 						</td>
 					</tr>
 

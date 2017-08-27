@@ -72,6 +72,14 @@ export default class ComputerVsComputer extends React.Component {
 		});
 	}
 
+	closeSocket() {
+		if (!this.socket) return;
+
+		this.socket.removeAllListeners();
+		this.socket.disconnect();
+		this.socket = null;
+	}
+
 	onCreateBtnClicked() {
 		this.botPlayer = null;
 
@@ -142,5 +150,9 @@ export default class ComputerVsComputer extends React.Component {
 		this.socket.removeAllListeners();
 		this.socket.disconnect();
 		this.socket = null;
+	}
+
+	componentWillUnmount() {
+		this.closeSocket();
 	}
 }

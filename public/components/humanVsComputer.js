@@ -73,6 +73,14 @@ export default class HumanVsComputer extends React.Component {
 		});
 	}
 
+	closeSocket() {
+		if (!this.socket) return;
+
+		this.socket.removeAllListeners();
+		this.socket.disconnect();
+		this.socket = null;
+	}
+
 	onCreateBtnClicked(e) {
 		if (!this.socket) {
 			this.initSocket();
@@ -168,8 +176,10 @@ export default class HumanVsComputer extends React.Component {
 
 		this.gameId = "";
 
-		this.socket.removeAllListeners();
-		this.socket.disconnect();
-		this.socket = null;
+		this.closeSocket();
+	}
+
+	componentWillUnmount() {
+		this.closeSocket();
 	}
 }
