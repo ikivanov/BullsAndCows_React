@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import NumberSelector from '../reusables/numberSelector.js';
 import ServerOutput from '../reusables/serverOutput.js';
@@ -15,7 +16,7 @@ export default class Peer2PeerStep3 extends React.Component {
 								<tbody>
 									<tr>
 										<td>
-											<NumberSelector disabled={ this.state.isRunning } onGuess={ (number) => this.onGuess(number) }/>
+											<NumberSelector disabled={ !this.state.isRunning || !this.state.isMyTurn } onGuess={ (number) => this.onGuess(number) }/>
 										</td>
 									</tr>
 									<tr>
@@ -88,4 +89,13 @@ export default class Peer2PeerStep3 extends React.Component {
 			opponentGuesses: props.opponentGuesses
 		});
 	}
+}
+
+Peer2PeerStep3.propTypes = {
+	isGameOver: PropTypes.bool.isRequired,
+	isRunning: PropTypes.bool.isRequired,
+	isMyTurn: PropTypes.bool.isRequired,
+	guesses: PropTypes.arrayOf(PropTypes.string),
+	opponentGuesses: PropTypes.arrayOf(PropTypes.string),
+	onGuess: PropTypes.func.isRequired
 }

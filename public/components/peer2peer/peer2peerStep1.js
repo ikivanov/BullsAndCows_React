@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 export default class Peer2PeerStep1 extends React.Component {
 	render() {
@@ -110,4 +111,11 @@ export default class Peer2PeerStep1 extends React.Component {
 
 		this.onJoinGame({ selectedGameId: this.state.selectedGameId, nickname: this.state.nickname });
 	}
+}
+
+Peer2PeerStep1.propTypes = {
+	selectedGameId: PropTypes.string,
+	gameList: PropTypes.arrayOf(PropTypes.string),
+	onCreateGame: PropTypes.func.isRequired,
+	onJoinGame: PropTypes.func.isRequired
 }

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import NumberSelector from '../reusables/numberSelector.js';
 import ServerOutput from '../reusables/serverOutput.js';
+import PropTypes from 'prop-types';
 
 export default class MultiplayerStep3 extends React.Component {
 	render() {
@@ -11,7 +12,7 @@ export default class MultiplayerStep3 extends React.Component {
 				<tbody>
 					<tr>
 						<td>
-							<NumberSelector disabled={ this.state.isRunning && this.state.isMyTurn } onGuess={ (number) => this.onGuess(number) }/>
+							<NumberSelector disabled={ !this.state.isRunning || !this.state.isMyTurn } onGuess={ (number) => this.onGuess(number) }/>
 						</td>
 					</tr>
 
@@ -62,4 +63,12 @@ export default class MultiplayerStep3 extends React.Component {
 			guesses: props.guesses
 		});
 	}
+}
+
+MultiplayerStep3.propTypes = {
+	isGameOver: PropTypes.bool,
+	isRunning: PropTypes.bool,
+	isMyTurn: PropTypes.bool,
+	guesses: PropTypes.arrayOf(PropTypes.string),
+	onGuess: PropTypes.func.isRequired
 }

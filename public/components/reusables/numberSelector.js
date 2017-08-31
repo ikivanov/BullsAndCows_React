@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import '../../styles/main.css';
 
@@ -13,7 +14,7 @@ export default class NumberSelector extends React.Component {
 			number3: 3,
 			number4: 4,
 			isValidInput: true,
-			disabled: props.disabled || false
+			disabled: props.disabled
 		};
 
 		if (props.onGuess) {
@@ -27,7 +28,7 @@ export default class NumberSelector extends React.Component {
 				<tbody>
 					<tr>
 						<td>
-							<input type="number" className="guess-number-textbox" min="1" max="9" disabled={ !this.state.disabled } value={ this.state.number1 }
+							<input type="number" className="guess-number-textbox" min="1" max="9" disabled={ this.state.disabled } value={ this.state.number1 }
 								onChange={ (e) => {
 									this.setState({ number1: e.target.value}, () => {
 										this.onValidate(e);
@@ -35,7 +36,7 @@ export default class NumberSelector extends React.Component {
 								}} />
 						</td>
 						<td>
-							<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ !this.state.disabled } value={ this.state.number2 }
+							<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ this.state.disabled } value={ this.state.number2 }
 								onChange={ (e) => {
 									this.setState({ number2: e.target.value}, () => {
 										this.onValidate(e);
@@ -43,7 +44,7 @@ export default class NumberSelector extends React.Component {
 								}} />
 						</td>
 						<td>
-							<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ !this.state.disabled } value={ this.state.number3 }
+							<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ this.state.disabled } value={ this.state.number3 }
 								onChange={ (e) => {
 									this.setState({ number3: e.target.value}, () => {
 										this.onValidate(e);
@@ -51,7 +52,7 @@ export default class NumberSelector extends React.Component {
 								}} />
 						</td>
 						<td>
-							<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ !this.state.disabled } value={ this.state.number4 }
+							<input type="number" className="guess-number-textbox" min="0" max="9" disabled={ this.state.disabled } value={ this.state.number4 }
 								onChange={ (e) => {
 									this.setState({ number4: e.target.value}, () => {
 										this.onValidate(e);
@@ -62,7 +63,7 @@ export default class NumberSelector extends React.Component {
 
 					<tr>
 						<td colSpan="4">
-							<button className="guess-button" disabled={ !this.state.disabled || !this.state.isValidInput } onClick={ (e) => this.onGuessBtnClicked(e) }>
+							<button className="guess-button" disabled={ this.state.disabled || !this.state.isValidInput } onClick={ (e) => this.onGuessBtnClicked(e) }>
 								Make a guess
 							</button>
 						</td>
@@ -82,10 +83,6 @@ export default class NumberSelector extends React.Component {
 	}
 
 	componentWillReceiveProps(props) {
-		if (this.props.disabled === props.disabled) {
-			return;
-		}
-
 		this.setState({ disabled: props.disabled });
 	}
 
@@ -112,10 +109,10 @@ export default class NumberSelector extends React.Component {
 	}
 
 	onGuessBtnClicked(e) {
-        if (!this.isValidNumber()) {
-            alert("Guess number cannot contain duplicating digits!");
-            return;
-        }
+		if (!this.isValidNumber()) {
+			alert("Guess number cannot contain duplicating digits!");
+			return;
+		}
 
 		if (this.onGuess) {
 			let number = [this.state.number1, this.state.number2, this.state.number3, this.state.number4];
@@ -123,4 +120,13 @@ export default class NumberSelector extends React.Component {
 			this.onGuess(number);
 		}
 	}
+}
+
+NumberSelector.propTypes = {
+	disabled: PropTypes.bool.isRequired,
+	onGuess: PropTypes.func.isRequired
+}
+
+NumberSelector.defaultProps = {
+	disabled: true
 }

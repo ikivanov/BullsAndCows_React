@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 import '../../styles/main.css';
 
@@ -31,4 +32,8 @@ export default class ServerOutput extends React.Component {
 
 		this.setState({ output: props.output });
 	}
+}
+
+ServerOutput.propTypes = {
+	output: PropTypes.arrayOf(PropTypes.string)
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 export default class MultiplayerStep2 extends React.Component {
 	render() {
@@ -81,4 +82,11 @@ export default class MultiplayerStep2 extends React.Component {
 
 		this.onStartGame();
 	}
+}
+
+MultiplayerStep2.propTypes = {
+	gameName: PropTypes.string,
+	gamePlayers: PropTypes.arrayOf(PropTypes.string),
+	onAddBot: PropTypes.func.isRequired,
+	onStartGame: PropTypes.func.isRequired
 }

@@ -35,7 +35,7 @@ export default class HumanVsComputer extends React.Component {
 
 						<tr>
 							<td colSpan="4">
-								<NumberSelector disabled={ this.state.isRunning }
+								<NumberSelector disabled={ !this.state.isRunning }
 												onGuess={ (number) => this.onGuess(number) } />
 							</td>
 						</tr>

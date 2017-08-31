@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 export default class Header extends React.Component {
 	render() {
@@ -10,4 +11,9 @@ export default class Header extends React.Component {
 			</div>
 		)
 	}
+}
+
+Header.propTypes = {
+	title: PropTypes.string.isRequired,
+	description: PropTypes.string.isRequired
 }

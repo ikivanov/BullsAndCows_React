@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
 export default class Peer2PeerStep2 extends React.Component {
 	render() {
@@ -67,4 +68,10 @@ export default class Peer2PeerStep2 extends React.Component {
 
 		this.onStartGame();
 	}
+}
+
+Peer2PeerStep2.propTypes = {
+	gameName: PropTypes.string.isRequired,
+	gamePlayers: PropTypes.arrayOf(PropTypes.string),
+	onStartGame: PropTypes.func.isRequired
 }
