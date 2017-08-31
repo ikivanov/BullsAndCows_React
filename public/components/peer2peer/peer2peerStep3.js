@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import NumberSelector from '../reusables/numberSelector.js';
 import ServerOutput from '../reusables/serverOutput.js';
+import ProgressBar from '../reusables/progressBar.js';
 
 export default class Peer2PeerStep3 extends React.Component {
 	render() {
@@ -40,21 +41,11 @@ export default class Peer2PeerStep3 extends React.Component {
 										<td>
 											<ServerOutput output={ this.state.opponentGuesses }/>
 
-											{
-												!this.state.isRunning && !this.state.isGameOver &&
-												<div className="awaiting-game-progress">
-													<img src="img/waiting.gif" />
-													<span>Awaiting game start...</span>
-												</div>
-											}
+											<ProgressBar visible={ !this.state.isRunning && !this.state.isGameOver }
+												text="Awaiting game start..." />
 
-											{
-												this.state.isRunning && !this.state.isMyTurn &&
-												<div className="awaiting-turn-progress">
-													<img src="img/waiting.gif" />
-													<span>Please wait for your turn...</span>
-												</div>
-											}
+											<ProgressBar visible={ this.state.isRunning && !this.state.isMyTurn }
+												text="Please wait for your turn..." />
 										</td>
 									</tr>
 								</tbody>

@@ -26,10 +26,6 @@ export default class ServerOutput extends React.Component {
 	}
 
 	componentWillReceiveProps(props) {
-		if (this.props.output === props.output) {
-			return;
-		}
-
 		this.setState({ output: props.output });
 	}
 }

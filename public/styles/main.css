@@ -153,7 +153,7 @@ label {
     vertical-align: middle;
 }
 
-.awaiting-game-progress {
+.game-progress {
     position: absolute;
     border: 1px solid;
     top: 50%;
@@ -165,24 +165,7 @@ label {
     margin-top: -27px;
 }
 
-.awaiting-game-progress img {
-    width: 32px;
-    vertical-align: middle;
-}
-
-.awaiting-turn-progress {
-    position: absolute;
-    border: 1px solid;
-    top: 50%;
-    left: 50%;
-    vertical-align: middle;
-    background-color: #55A0E2;
-    margin-left: -120px;
-    padding: 10px;
-    margin-top: -27px;
-}
-
-.awaiting-turn-progress img {
+.game-progress img {
     width: 32px;
     vertical-align: middle;
 }
