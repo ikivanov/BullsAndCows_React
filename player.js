@@ -1,18 +1,9 @@
-﻿var Player = (function () {
-    
-    var Player = function (nickname, token, isGameCreator) {
-        var that = this;
-
-        that.nickname = nickname;
-        that.token = token;
-        that.isGameCreator = isGameCreator;
-    };
-    
-    Player.prototype = {
-        constructor: Player
-    };
-    
-    return Player;
-})();
+﻿class Player {
+	constructor(nickname, token, isGameCreator) {
+		this.nickname = nickname;
+		this.token = token;
+		this.isGameCreator = isGameCreator;
+	}
+}
 
 exports.Player = Player;

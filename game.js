@@ -1,196 +1,163 @@
-﻿var Player = require("./player").Player;
-var Token = require("./token").Token;
+﻿const Player = require("./player").Player,
+	Token = require("./token").Token,
+	consts = require("./consts").consts,
+	gameType = require("./consts").gameType,
+	uuid = require('uuid');
 
-var consts = require("./consts").consts;
-var gameType = require("./consts").gameType;
+class Game {
+	constructor(name, type) {
+        this.id = uuid.v4();
 
-var uuid = require('uuid');
+        this.name = name;
+        this.type = type;
 
-var Game = (function () {
-    var Game = function (name, type) {
-        var that = this;
+        this.secretNumber = this.generateSecretNumber();
 
-        that.id = uuid.v4();
+        this.numberOfMoves = 0;
+        this.currentPlayerIndex = -1;
+        this.players = [];
 
-        that.name = name;
-        that.type = type;
-        
-        that.secretNumber = generateSecretNumber();
+        this.isStarted = false;
+	}
 
-        that.numberOfMoves = 0;
-        that.currentPlayerIndex = -1;
-        that.players = [];
+	createPlayer(nickname, isGameCreator) {
+		const nick = this.ensureNickname(nickname),
+			expirationTime = new Date().getTime() + consts.EXPIRATION_TIME_MINUTES * 60 * 1000,
+			token = new Token(uuid.v4(), new Date(expirationTime));
 
-        that.isStarted = false;
-    };
-    
-    Game.prototype = {
-        constructor: Game,
-        
-        createPlayer: function(nickname, isGameCreator) {
-            var that = this;
+		return new Player(nick, token, isGameCreator);
+	}
 
-            var nick = that.ensureNickname(nickname);
-            
-            var expirationTime = new Date().getTime() + consts.EXPIRATION_TIME_MINUTES * 60 * 1000;
+	addPlayer(player) {
+		if (!player) return;
 
-            var token = new Token(uuid.v4(), new Date(expirationTime));
+		if (this.type === gameType.SINGLE_PLAYER) {
+			if (this.players.length == 1) {
+				throw new Error("This game is a single player game. No more that one player can join it!");
+			}
+		}
 
-            return new Player(nick, token, isGameCreator);
-        },
+		this.players.push(player);
+	}
 
-        addPlayer: function (player) {
-            var that = this;
+	removePlayer(nickname) {
+		//TODO:
+	}
 
-            if (!player) return;
-            
-            if (that.type == gameType.SINGLE_PLAYER) {
-                if (that.players.length == 1) {
-                    throw new Error("This game is a single player game. No more that one player can join it!");
-                }
-            }
+	getPlayerByTokenKey(tokenKey) {
+		this.players.forEach(player =>  {
+		});
 
-            that.players.push(player);
-        },
+		for (let i = 0; i < this.players.length; i++) {
+			const player = this.players[i];
 
-        removePlayer: function (nickname) {
-            //TODO:
-        },
-        
-        getPlayerByTokenKey: function (tokenKey) {
-            var that = this;
+			if (player.token.key === tokenKey) {
+				return player;
+			}
+		}
 
-            for (var i = 0; i < that.players.length; i++) {
-                var player = that.players[i];
-                
-                if (player.token.key === tokenKey) {
-                    return player;
-                }
-            }
+		return null;
+	}
 
-            return null;
-        },
+	nicknameExists(nickname) {
+		this.players.forEach(player => {
+			if (nickname === player.nickname) {
+				return true;
+			}
+		});
 
-        nicknameExists: function (nickname) {
-            var that = this;
+		return false;
+	}
 
-            for (var i = 0; i < that.players.length; i++) {
-                if (nickname == that.players[i].nickname) {
-                    return true;
-                }
-            }
+	ensureNickname(nickname) {
+		if (!nickname) {
+			nickname = "guest";
+		}
 
-            return false;
-        },
+		let suffix = 2;
 
-        ensureNickname: function (nickname) {
-            var that = this;
+		while (this.nicknameExists(nickname)) {
+			nickname += suffix;
+			suffix++;
+		}
 
-            if (!nickname) {
-                nickname = "guest";
-            }
+		return nickname;
+	}
 
-            var suffix = 2;
-            while (that.nicknameExists(nickname)) {
-                nickname += suffix;
-                suffix++;
-            }
+	getCurrentTurnPlayer() {
+		if (this.type == gameType.SINGLE_PLAYER) {
+			if (this.players.length > 0) {
+				return this.players[0];
+			} else {
+				return null;
+			}
+		}
 
-            return nickname;
-        },
-        
-        getCurrentTurnPlayer: function () {
-            var that = this;
-            
-            if (that.type == gameType.SINGLE_PLAYER) {
-                if (that.players.length > 0) {
-                    return that.players[0];
-                } else {
-                    return null;
-                }
-            }
-            
-            if (that.currentPlayerIndex == -1) {
-                return null;
-            }            
-            
-            return that.players[that.currentPlayerIndex];
-        },
+		if (this.currentPlayerIndex == -1) {
+			return null;
+		}
 
-        getNextTurnPlayer: function () {
-            var that = this;
-            
-            if (that.type == gameType.SINGLE_PLAYER) {
-                return that.getCurrentTurnPlayer();
-            }
-            
-            if (that.currentPlayerIndex == that.players.length - 1) {
-                that.currentPlayerIndex = 0;
-            } else {
-                that.currentPlayerIndex++;
-            }
-            
-            return that.players[that.currentPlayerIndex];
-        },
+		return this.players[this.currentPlayerIndex];
+	}
 
-        start: function () {
-            var that = this;
+	getNextTurnPlayer() {
+		if (this.type == gameType.SINGLE_PLAYER) {
+			return this.getCurrentTurnPlayer();
+		}
 
-            that.isStarted = true;
-        },
-    
-        checkGuessNumber: function (player, guessNumber) {
-            var that = this;
+		if (this.currentPlayerIndex == this.players.length - 1) {
+			this.currentPlayerIndex = 0;
+		} else {
+			this.currentPlayerIndex++;
+		}
 
-            var bulls = 0, cows = 0;
-            
-            for (var i = 0; i < guessNumber.length; i++) {
-                var num = parseInt(guessNumber[i]);
-                
-                var index = that.secretNumber.indexOf(num);
-                if (index >= 0) {
-                    if (index == i) {
-                        bulls++;
-                    } else {
-                        cows++;
-                    }
-                }
-            }
-            
-            var res = 
-             {
-                bulls: bulls, cows: cows
-            }
-            
-            that.numberOfMoves++;
-            
-            return res;
-        }
-    };
-    
-    var generateSecretNumber = function () {
-        var that = this;
+		return this.players[this.currentPlayerIndex];
+	}
 
-        var result = [];
-        
-        for (var i = 0; i < consts.NUMBER_SIZE; i++) {
-            
-            while (true) {
-                var num = Math.floor((Math.random() * 9) + 1);
-                
-                if (result.indexOf(num) == -1) {
-                    result.push(num);
-                    break;
-                } else {
-                    continue;
-                }
-            }
-        }
-        
-        return result;
-    }
-    
-    return Game;
-})();
+	start() {
+		this.isStarted = true;
+	}
+
+	checkGuessNumber(player, guessNumber) {
+		let bulls = 0,
+			cows = 0;
+
+		guessNumber.forEach((number, i) => {
+			const num = parseInt(number),
+				index = this.secretNumber.indexOf(num);
+
+			if (index >= 0) {
+				if (index == i) {
+					bulls++;
+				} else {
+					cows++;
+				}
+			}
+		});
+
+		this.numberOfMoves++;
+		return { bulls: bulls, cows: cows };
+	}
+
+	generateSecretNumber() {
+		let result = [];
+
+		for (let i = 0; i < consts.NUMBER_SIZE; i++) {
+
+			while (true) {
+				const num = Math.floor((Math.random() * 9) + 1);
+
+				if (result.indexOf(num) == -1) {
+					result.push(num);
+					break;
+				} else {
+					continue;
+				}
+			}
+		}
+
+		return result;
+	}
+}
 
 exports.Game = Game;
