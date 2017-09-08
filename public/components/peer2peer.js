@@ -296,6 +296,14 @@ export default class Peer2Peer extends React.Component {
 		this.onGuessResponse(data);
 	}
 
+	onGuessResponse(data) {
+		let bulls = data.bulls,
+			cows = data.cows,
+			number = data.number;
+
+		this.guesses.push(data.nickname + ": " + number.join('') + ", bulls: " + bulls + ", cows: " + cows);
+	}
+
 	onJoinGame(args) {
 		if (!this.socket) {
 			this.initSocket();

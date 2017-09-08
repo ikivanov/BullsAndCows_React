@@ -81,8 +81,7 @@ export default class Peer2PeerStep1 extends React.Component {
 			nickname: "",
 			gameName: "",
 			selectedGameId: props.selectedGameId,
-			gamesList: props.gamesList,
-			gamePlayers: []
+			gamesList: props.gamesList
 		};
 
 		this.onCreateGame = props.onCreateGame || null;
